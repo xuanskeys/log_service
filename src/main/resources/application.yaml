@@ -1,0 +1,24 @@
+server:
+  port: 8090
+spring:
+  application:
+    name: log-service
+  cloud:
+    nacos:
+      config:
+        username: xueyuan
+        password: 123456
+        server-addr: 127.0.0.1:8848
+        namespace: xueyuan
+        group: DEFAULT_GROUP
+        file-extension: yaml, properties
+      discovery:
+        username: xueyuan
+        password: 123456
+        server-addr: 127.0.0.1:8848
+        namespace: xueyuan
+        group: DEFAULT_GROUP
+  config:
+    import:
+      - optional:nacos:${spring.application.name}.yml
+      - optional:nacos:encrypt-config.yml
