@@ -3,6 +3,11 @@ server:
 spring:
   application:
     name: log-service
+  rabbitmq:
+    listener:
+      simple:
+        # A failed log record is rejected once instead of being redelivered forever.
+        default-requeue-rejected: false
   cloud:
     nacos:
       config:

@@ -3,6 +3,7 @@ package com.xuan.logservice.entity.model;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableField;
 import java.time.LocalDateTime;
 import java.io.Serializable;
 import lombok.Data;
@@ -79,6 +80,7 @@ public class OperationLog implements Serializable {
     /**
      * 执行时间
      */
+    @TableField("`current_time`")
     private LocalDateTime currentTime;
 
     /**
