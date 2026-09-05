@@ -1,5 +1,5 @@
 server:
-  port: 8090
+  port: 8091
 spring:
   application:
     name: log-service
@@ -21,4 +21,12 @@ spring:
   config:
     import:
       - optional:nacos:${spring.application.name}.yml
-      - optional:nacos:encrypt-config.yml
+
+operation-log:
+  # This application consumes logs; it must not publish logs for itself.
+  enabled: false
+  consumer:
+    services:
+      - user-service
+      - role-service
+    durable: true
