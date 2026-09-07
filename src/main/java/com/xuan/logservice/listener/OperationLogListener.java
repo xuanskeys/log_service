@@ -21,6 +21,8 @@ public class OperationLogListener {
                     .setOperationType(event.operationType())
                     .setUserId(event.userId())
                     .setUsername(event.username())
+                    .setEmail(event.email())
+                    .setPhone(event.phone())
                     .setTenantId(event.tenantId())
                     .setTenantName(event.tenantName())
                     .setRoleId(event.roleId())

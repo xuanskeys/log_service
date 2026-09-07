@@ -8,6 +8,8 @@ public record OperationLogEvent(
         String operationType,
         Long userId,
         String username,
+        String email,
+        String phone,
         Long tenantId,
         String tenantName,
         Long roleId,

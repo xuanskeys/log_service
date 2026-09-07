@@ -53,6 +53,16 @@ public class OperationLog implements Serializable {
     private String username;
 
     /**
+     * 操作涉及的邮箱快照
+     */
+    private String email;
+
+    /**
+     * 操作涉及的手机号快照
+     */
+    private String phone;
+
+    /**
      * 租户ID，逻辑关联user_service.tenant.id
      */
     private Long tenantId;

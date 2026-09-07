@@ -94,18 +94,26 @@ public class OperationLogAutoConfiguration {
             } catch (Throwable ex) {
                 send(annotation, "ERROR", annotation.description() + " failed: " + safeMessage(ex));
                 throw ex;
+            } finally {
+                OperationLogContext.clear();
             }
         }
 
         private void send(OperationLog annotation, String level, String description) {
             try {
                 ServletRequestAttributes attributes = requestAttributes();
+                OperationLogContext.Metadata context = OperationLogContext.current();
                 OperationLogEvent event = new OperationLogEvent(
                         serviceName,
                         annotation.type().name(),
-                        longMetadata(attributes, "userId", "X-User-Id"),
-                        metadata(attributes, "username", "X-Username"),
-                        longMetadata(attributes, "tenantId", "X-Tenant-Id"),
+                        firstNonNull(longMetadata(attributes, "userId", "X-User-Id"),
+                                context == null ? null : context.userId()),
+                        firstText(metadata(attributes, "username", "X-Username"),
+                                context == null ? null : context.username()),
+                        context == null ? null : context.email(),
+                        context == null ? null : context.phone(),
+                        firstNonNull(longMetadata(attributes, "tenantId", "X-Tenant-Id"),
+                                context == null ? null : context.tenantId()),
                         header(attributes, "X-Tenant-Name"),
                         longHeader(attributes, "X-Role-Id"),
                         header(attributes, "X-Role-Name"),
@@ -154,6 +162,14 @@ public class OperationLogAutoConfiguration {
             } catch (NumberFormatException ignored) {
                 return null;
             }
+        }
+
+        private static <T> T firstNonNull(T primary, T fallback) {
+            return primary != null ? primary : fallback;
+        }
+
+        private static String firstText(String primary, String fallback) {
+            return StringUtils.hasText(primary) ? primary : fallback;
         }
 
         private static String safeMessage(Throwable throwable) {
